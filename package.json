@@ -1,9 +1,14 @@
 {
   "name": "image-util",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "main": "main/main.js",
+  "author": {
+    "name": "Gregory Triantafyllidis",
+    "email": "greg.triant@outlook.com"
+  },
+  "description": "An app that handles image files with ease",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

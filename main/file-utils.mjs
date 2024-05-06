@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const backup_dir = join(__dirname, '..', 'public', 'backups', '/'); // dir with .json backups
 const dir_json = join(__dirname, '..', 'public', 'current_json_dics', '/'); // dir with .json files
-const ffmpeg_path = join(__dirname, '..', 'ffmpeg', 'bin', 'ffmpeg.exe'); 
+const ffmpeg_path = join(__dirname, '..', 'ffmpeg.exe');
 
 export function readFiles(dir, file_ext) {
     try {
