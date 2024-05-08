@@ -89,7 +89,7 @@ ipcMain.on('compress-files', async (event, args) => {
 ipcMain.on('compress-file', async (event, args) => {
     // console.log(dir);
     const {dir, outputDir, file, index} = args;
-    const res = compressFile(dir, outputDir, file.name);
+    const res = await compressFile(dir, outputDir, file.name);
     if (res) {
         const reply = {
             success: true,
@@ -127,6 +127,6 @@ ipcMain.on('open-select-directory', async (event, args) => {
 
 ipcMain.on('copy-rest-to-output', async (event, args) => {
     const { inputDir, outputDir } = args;
-    const reply = copyRestToOutput(inputDir, outputDir);
+    const reply = await copyRestToOutput(inputDir, outputDir);
     event.reply('copy-rest-to-output-result', reply);
 });

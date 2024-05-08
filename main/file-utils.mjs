@@ -1,7 +1,19 @@
-import { readdirSync, readFileSync, copyFileSync, writeFileSync, statSync, existsSync, mkdirSync, unlinkSync, renameSync, rmdirSync } from 'fs';
+import { promisify } from 'node:util';
+import { exec } from 'node:child_process';
+import { promises as fsPromises } from 'node:fs';
+const promisifiedExec = promisify(exec);
+import { readdirSync, statSync, existsSync, mkdirSync, unlinkSync, renameSync, rmdirSync } from 'fs';
 import path, { join, extname } from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+// import { execSync, exec } from 'child_process';
+
+
+// async function lsExample() {
+//   const { stdout, stderr } = await exec('ls');
+//   console.log('stdout:', stdout);
+//   console.error('stderr:', stderr);
+// }
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -17,7 +29,7 @@ export function readFiles(dir, file_ext) {
         for (let i = 0; i < files.length; i++) {
             // console.log('reading file:', files[i]);
             const ext = extname(files[i]);
-            if (ext === file_ext || ext === file_ext.toUpperCase() || file_ext === ".*") {
+            if (ext === file_ext || ext === file_ext.toUpperCase() || file_ext === ".*" && files[i][0] !== ".") {
                 const file = {
                     name: files[i],
                     size: getFileSize(dir, files[i])
@@ -72,7 +84,7 @@ export function compressFiles(dir, files) {
 
 }
 
-export function compressFile(dir, outputDir, filename) {
+export async function compressFile(dir, outputDir, filename) {
     console.log("Compressing...");
     console.log(dir);
     console.log(outputDir);
@@ -91,8 +103,9 @@ export function compressFile(dir, outputDir, filename) {
             console.log(`Deleted previous output file: ${outputFilePath}`);
         }
         const ffmpegCommand = `${ffmpeg_path} -i "${inputFilePath}" -compression_level 20 "${outputFilePath}"`;
-        const output = execSync(ffmpegCommand).toString(); // Convert buffer to string
-        console.log(`Output of ffmpeg command for ${filename}:`, output);
+        const { stdout, stderr } = await promisifiedExec(ffmpegCommand);
+        console.log('stdout:', stdout);
+        console.error('stderr:', stderr);
         console.log(`Image ${filename} compressed successfully!`);
         return true;
     } catch (error) {
@@ -131,16 +144,16 @@ export function replaceOriginalsWithCompressed(dir) {
     }
 }
 
-export function copyRestToOutput(inputDir, outputDir) {
+export async function copyRestToOutput(inputDir, outputDir) {
     try {
-        console.log("-------------------", inputDir, outputDir)
+        console.log("-------------------", inputDir, outputDir);
         // move files that are not images to output
         const originalFiles = readFiles(inputDir, ".*");
         console.log(originalFiles);
         for (const file of originalFiles) {
             const ext = extname(file.name);
-            if (ext !== ".jpg" && ext !== ".JPG") {
-                copyFileSync(join(inputDir, file.name), join(outputDir, file.name));
+            if (ext !== ".jpg" && ext !== ".JPG" || file[0] === ".") {
+                await fsPromises.copyFile(join(inputDir, file.name), join(outputDir, file.name));
             }
         }
         
