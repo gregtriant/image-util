@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Snackbar, IconButton } from '@mui/material';
 
 function MySnackbar({
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    severity = '',
+    // severity = '',
     message = '',
     open = false,
     setOpen = (value) => {

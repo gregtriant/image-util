@@ -1,11 +1,9 @@
-import { useState } from "react"
 import { 
     Box,
     ListItem,
     ListItemAvatar,
     ListItemText,
     Avatar,
-    IconButton,
     CircularProgress,
 } from "@mui/material"
 
@@ -13,7 +11,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ImageIcon from '@mui/icons-material/Image';
 import LandscapeIcon from '@mui/icons-material/Landscape';
-import DeleteIcon from '@mui/icons-material/Delete';
+// import DeleteIcon from '@mui/icons-material/Delete';
 const FileItem = ({
     file,
     status="initial", // initial | compressing | success | error

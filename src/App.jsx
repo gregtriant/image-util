@@ -13,7 +13,7 @@ import {
     CircularProgress
 } from '@mui/material';
 import FileItem from "./components/FileItem";
-import AreYouSurePopup from './components/AreYouSurePopup';
+// import AreYouSurePopup from './components/AreYouSurePopup';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import MySnackbar from './components/MySnackBar';
 
@@ -41,7 +41,7 @@ function App() {
 
     const [openBackdrop, setOpenBackdrop] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [showAreYouSure, setShowAreYouSure] = useState(false);
+    // const [showAreYouSure, setShowAreYouSure] = useState(false);
     const [folder, setFolder] = useState("");
     const [outputFolder, setOutputFolder] = useState("");
     const [files, setFiles] = useState(initialFiles);
@@ -96,6 +96,7 @@ function App() {
 
     useEffect(() => {
         setFiles(filesRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filesRef.current]); // This effect will run whenever folderRef.current changes
 
     useEffect(() => {
@@ -113,6 +114,7 @@ function App() {
 
         listenOn('compress-file-result', (_event, _args) => { // we are compressing the files one after the other
             const { success: suc, filename, index } = _args;
+			console.log("result:", filename);
             const newFiles = Object.assign({}, filesRef.current); // deep clone
             newFiles.images[index].status = "success";
             filesRef.current = newFiles;
